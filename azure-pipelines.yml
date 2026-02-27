@@ -1,18 +1,24 @@
-
 trigger:
 - main
 
 pool:
   vmImage: ubuntu-latest
+
 steps:
 - task: Docker@2
   displayName: Build and Push
   inputs:
-    containerRegistry: 'docker-registry-login'
-    repository: 'rmk1988/httpd-webapp'
+    containerRegistry: 'docker-registry-login'      # service connection to Docker Hub/ACR
+    repository: 'rmk1988/httpd-webapp'              # e.g. Docker Hub repo
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
+    tags: |
+      $(Build.BuildId)
+
 - task: AzureWebAppContainer@1
+  displayName: Deploy container to Web App
   inputs:
     azureSubscription: 'Azure subscription 1(0fdd7122-3105-4287-b900-df212ee1e24f)'
     appName: 'webappfordevops'
+    imageName: 'rmk1988/httpd-webapp:$(Build.BuildId)'
+
