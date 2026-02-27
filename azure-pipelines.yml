@@ -12,3 +12,7 @@ steps:
     repository: 'rmk1988/httpd-webapp'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
+- task: AzureWebAppContainer@1
+  inputs:
+    azureSubscription: 'Azure subscription 1(0fdd7122-3105-4287-b900-df212ee1e24f)'
+    appName: 'webappfordevops'
